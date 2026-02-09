@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 // Simple Hash Router Implementation
 const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState(window.location.hash || '#/');
+  const [wishlist, setWishlist] = useState<string[]>([]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -20,11 +21,19 @@ const App: React.FC = () => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  const toggleWishlist = (productId: string) => {
+    setWishlist(prev => 
+      prev.includes(productId) 
+        ? prev.filter(id => id !== productId) 
+        : [...prev, productId]
+    );
+  };
+
   const renderContent = () => {
     switch (currentPath) {
       case '#/shop':
       case '#/collections':
-        return <ProductGrid />;
+        return <ProductGrid wishlist={wishlist} onToggleWishlist={toggleWishlist} />;
       case '#/about':
         return (
           <section className="py-32 container mx-auto px-6 text-center">
@@ -90,7 +99,7 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <ProductGrid />
+            <ProductGrid wishlist={wishlist} onToggleWishlist={toggleWishlist} />
           </>
         );
     }
@@ -98,7 +107,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
+      <Navbar wishlistCount={wishlist.length} />
       <main>
         {renderContent()}
       </main>
