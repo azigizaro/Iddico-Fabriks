@@ -1,0 +1,7 @@
+{
+  "name": "Iddico Fabriks",
+  "description": "Premium destination for exquisite textiles and high-quality fabrics from around the world.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
